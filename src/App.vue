@@ -1,22 +1,24 @@
 <template>
   <div class="app-container">
     <b-field
-      label="Enter Your Url Here:"
+      label="Kod Almak İstediğiniz URL'i giriniz:"
       :type="inputType"
       :message="errorMessage"
     >
-      <b-input
-        type="url"
-        v-model="url"
-        placeholder="Geçerli bir url giriniz."
-      ></b-input>
+      <b-input v-model="url" placeholder="Geçerli bir url giriniz."></b-input>
     </b-field>
 
-    <b-button @click="handleUrlSubmit" type="is-primary" outlined expanded
-      >Outlined</b-button
+    <b-button @click="handleUrlSubmit" :type="inputType" outlined expanded
+      >QR Kodu Getir</b-button
     >
 
-    <img v-if="isUrlIsValid && isCalled" :src="callUrl" alt="QR Kodunuz" />
+    <img
+      v-if="isUrlIsValid && isCalled"
+      :src="callUrl"
+      alt="QR Kodunuz"
+      width="400"
+      height="400"
+    />
   </div>
 </template>
 
@@ -37,22 +39,15 @@ export default {
   },
   computed: {
     inputType() {
-      return this.hasError ? "is-error" : "is-primary";
+      return this.hasError ? "is-danger" : "is-primary";
     },
     isUrlIsValid() {
-      console.log(new RegExp(this.urlRegex).test(this.url));
       return new RegExp(this.urlRegex).test(this.url);
     },
   },
   methods: {
     async handleUrlSubmit() {
-      console.log("Hello World");
-
-      this.$buefy.toast.open({
-        duration: 5000,
-        message: `Something's not good, also I'm on bottom`,
-        type: "is-danger",
-      });
+      this.validateUrl(this.url);
 
       this.isCalled = true;
       this.callUrl = this.baseApiUrl + this.url;
@@ -61,7 +56,7 @@ export default {
       let isUrlValid = new RegExp(this.urlRegex).test(url);
 
       if (!isUrlValid) {
-        toastMessage("Lütfen düzgün bir url giriniz", true);
+        this.toastMessage("Lütfen düzgün bir url giriniz", true);
 
         this.hasError = true;
         this.errorMessage = "Girdiğiniz url düzgün formatta değil.";
