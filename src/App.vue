@@ -29,7 +29,7 @@ export default {
     return {
       hasError: false,
       errorMessage: "",
-      url: "https://google.com.tr",
+      url: "https://furkanozbek.com",
       baseApiUrl: "https://qrtag.net/api/qr_12.svg?url=",
       callUrl: "",
       isCalled: false,
