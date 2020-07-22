@@ -48,8 +48,35 @@ export default {
     async handleUrlSubmit() {
       console.log("Hello World");
 
+      this.$buefy.toast.open({
+        duration: 5000,
+        message: `Something's not good, also I'm on bottom`,
+        type: "is-danger",
+      });
+
       this.isCalled = true;
       this.callUrl = this.baseApiUrl + this.url;
+    },
+    validateUrl(url) {
+      let isUrlValid = new RegExp(this.urlRegex).test(url);
+
+      if (!isUrlValid) {
+        toastMessage("Lütfen düzgün bir url giriniz", true);
+
+        this.hasError = true;
+        this.errorMessage = "Girdiğiniz url düzgün formatta değil.";
+        setTimeout(() => {
+          this.hasError = false;
+          this.errorMessage = "";
+        }, 5000);
+      }
+    },
+    toastMessage(message, isError) {
+      this.$buefy.toast.open({
+        duration: 5000,
+        message: message,
+        type: isError ? "is-danger" : "is-primary",
+      });
     },
   },
 };
